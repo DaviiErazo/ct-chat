@@ -1,0 +1,54 @@
+type Message {
+  id: ID!
+  roomId: String!
+  content: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+scalar DateTime
+
+input CreateMessageRequest {
+  content: String!
+  roomId: String!
+}
+
+type ListMessageResponse {
+  messages: [Message]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+input ModelMessageFilterInput {
+  sortDirection: ModelSortDirection!
+  limit: Int!
+  page: Int!
+}
+
+type Mutation {
+  createMessage(input: CreateMessageRequest): CreateMessageResponse
+  deleteMessage(id: String!): DeleteMessageResponse
+}
+
+type Query {
+  listMessages(input: ModelMessageFilterInput!): ListMessageResponse
+}
+
+type Subscription {
+  messageCreated(roomId: String!): MessageCreatedResponse!
+}
+
+type CreateMessageResponse {
+  message: Message
+}
+
+type DeleteMessageResponse {
+  message: Message
+}
+
+type MessageCreatedResponse {
+  message: Message
+}

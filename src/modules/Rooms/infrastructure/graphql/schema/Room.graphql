@@ -1,0 +1,53 @@
+type Room {
+  id: ID!
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+scalar DateTime
+
+input CreateRoomRequest {
+  name: String!
+}
+
+type CreateRoomResponse {
+  room: Room
+}
+
+type DeleteRoomResponse {
+  room: Room
+}
+
+type ModelRoomConnection {
+  items: [Room]
+}
+
+enum OrderBy {
+  ASC
+  DESC
+}
+
+input ModelRoomFilterInput {
+  field: String
+  operator: String
+  value: String
+}
+
+input QueryModelRoom {
+  filters: [ModelRoomFilterInput]
+  orderBy: OrderBy,
+  order: String,
+  limit: Int,
+  offset: Int
+}
+
+type Mutation {
+  createRoom(input: CreateRoomRequest): CreateRoomResponse
+  deleteRoom(id: String!): DeleteRoomResponse
+}
+
+type Query {
+  listRooms(query: QueryModelRoom): ModelRoomConnection
+}

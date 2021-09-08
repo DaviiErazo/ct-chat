@@ -1,5 +1,0 @@
-services:
-
-  Room.controllers.StatusGetController:
-    class: ../../controllers/StatusGetController
-    arguments: []

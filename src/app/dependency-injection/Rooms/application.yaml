@@ -1,0 +1,46 @@
+services:
+
+  Room.RoomRepository:
+    class: ../../../modules/Rooms/infrastructure/persistence/typeorm/RoomRepository
+    arguments: ['@Shared.ConnectionManager']
+
+  Room.RoomCreator:
+    class: ../../../modules/Rooms/application/Create/RoomCreator
+    arguments: ['@Room.RoomRepository']
+
+  Room.RoomDeleter:
+    class: ../../../modules/Rooms/application/Delete/RoomDeleter
+    arguments: ['@Room.RoomRepository']
+
+  Room.CreateRoomPresenter:
+    class: ../../../modules/Rooms/infrastructure/presenter/GqlCreateRoomPresenter
+    arguments: []
+
+  Room.DeleteRoomPresenter:
+    class: ../../../modules/Rooms/infrastructure/presenter/GqlDeleteRoomPresenter
+    arguments: []
+
+  Room.CreateRoomCommandHandler:
+    class: ../../../modules/Rooms/application/Create/CreateRoomCommandHandler
+    arguments: ['@Room.RoomCreator', '@Room.CreateRoomPresenter']
+    tags:
+      - { name: 'commandHandler' }
+
+  Room.DeleteRoomCommandHandler:
+    class: ../../../modules/Rooms/application/Delete/DeleteRoomCommandHandler
+    arguments: ['@Room.RoomDeleter', '@Room.DeleteRoomPresenter']
+    tags:
+      - { name: 'commandHandler' }
+
+  Room.RoomsByCriteriaSearcher:
+    class: ../../../modules/Rooms/application/SearchByCriteria/RoomsByCriteriaSearcher
+    arguments: ['@Room.RoomRepository']
+
+  Room.SearchRoomsByCriteriaQueryHandler:
+    class: ../../../modules/Rooms/application/SearchByCriteria/SearchRoomsByCriteriaQueryHandler
+    arguments: ['@Room.RoomsByCriteriaSearcher']
+    tags:
+      - { name: 'queryHandler' }
+
+  
+      

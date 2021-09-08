@@ -1,0 +1,15 @@
+{
+  "type": "mysql",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "username": "docker",
+  "password": "docker",
+  "database": "graphql-rooms",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["dist/modules/Messages/infrastructure/persistence/typeorm/entity/*.js", "dist/modules/Rooms/infrastructure/persistence/typeorm/entity/*.js"],
+  "migrations": ["dist/modules/Messages/infrastructure/persistence/typeorm/migration/*.js"],
+  "cli": {
+    "migrationsDir": "src/modules/Messages/infrastructure/persistence/typeorm/migration"
+  }
+}

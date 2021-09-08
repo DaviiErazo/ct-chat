@@ -1,0 +1,100 @@
+input CreateMessageRequest {
+  content: String!
+  roomId: String!
+}
+
+type CreateMessageResponse {
+  message: Message
+}
+
+input CreateRoomRequest {
+  name: String!
+}
+
+type CreateRoomResponse {
+  room: Room
+}
+
+scalar DateTime
+
+type DeleteMessageResponse {
+  message: Message
+}
+
+type DeleteRoomResponse {
+  room: Room
+}
+
+type ListMessageResponse {
+  messages: [Message]
+}
+
+type Message {
+  id: ID!
+  roomId: String!
+  content: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type MessageCreatedResponse {
+  message: Message
+}
+
+input ModelMessageFilterInput {
+  sortDirection: ModelSortDirection!
+  limit: Int!
+  page: Int!
+}
+
+type ModelRoomConnection {
+  items: [Room]
+}
+
+input ModelRoomFilterInput {
+  field: String
+  operator: String
+  value: String
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type Mutation {
+  createMessage(input: CreateMessageRequest): CreateMessageResponse
+  createRoom(input: CreateRoomRequest): CreateRoomResponse
+  deleteMessage(id: String!): DeleteMessageResponse
+  deleteRoom(id: String!): DeleteRoomResponse
+}
+
+enum OrderBy {
+  ASC
+  DESC
+}
+
+type Query {
+  listMessages(input: ModelMessageFilterInput!): ListMessageResponse
+  listRooms(query: QueryModelRoom): ModelRoomConnection
+}
+
+input QueryModelRoom {
+  filters: [ModelRoomFilterInput]
+  orderBy: OrderBy
+  order: String
+  limit: Int
+  offset: Int
+}
+
+type Room {
+  id: ID!
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+}
+
+type Subscription {
+  messageCreated(roomId: String!): MessageCreatedResponse!
+}

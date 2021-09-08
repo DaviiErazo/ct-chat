@@ -1,0 +1,47 @@
+services:
+
+  Message.MessageRepository:
+    class: ../../../modules/Messages/infrastructure/persistence/typeorm/MessageRepository
+    arguments: ['@Shared.ConnectionManager']
+
+  Message.CreateMessagePresenter:
+    class: ../../../modules/Messages/infrastructure/presenter/GqlCreateMessagePresenter
+    arguments: []
+
+  Message.DeleteMessagePresenter:
+    class: ../../../modules/Messages/infrastructure/presenter/GqlDeleteMessagePresenter
+    arguments: []
+
+  Message.ListMessagePresenter:
+    class: ../../../modules/Messages/infrastructure/presenter/GqlListMessagePresenter
+    arguments: []
+
+  Message.MessageCreator:
+    class: ../../../modules/Messages/application/Create/MessageCreator
+    arguments: ['@Message.MessageRepository', '@Room.RoomRepository']
+
+  Message.MessageDeleter:
+    class: ../../../modules/Messages/application/Delete/MessageDeleter
+    arguments: ['@Message.MessageRepository']
+
+  Message.CreateMessageCommandHandler:
+    class: ../../../modules/Messages/application/Create/CreateMessageCommandHandler
+    arguments: ['@Message.MessageCreator', '@Message.CreateMessagePresenter']
+    tags:
+      - { name: 'commandHandler' }
+
+  Message.DeleteMessageCommandHandler:
+    class: ../../../modules/Messages/application/Delete/DeleteMessageCommandHandler
+    arguments: ['@Message.MessageDeleter', '@Message.DeleteMessagePresenter']
+    tags:
+      - { name: 'commandHandler' }
+
+  Message.ListMessages:
+    class: ../../../modules/Messages/application/List/ListMessages
+    arguments: ['@Message.MessageRepository']
+
+  Message.SearchMessagesByCriteriaQueryHandler:
+    class: ../../../modules/Messages/application/List/ListMessagesQueryHandler
+    arguments: ['@Message.ListMessages', '@Message.ListMessagePresenter']
+    tags:
+      - { name: 'queryHandler' }
